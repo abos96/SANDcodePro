@@ -39,20 +39,11 @@
 
 
 
-function ConvertAxionRaw(dirname,metadatafilename,fill_div,fill_genotype,genotype,fs,ExportFolder)
+function ConvertAxionRaw(dirname,ExportFolder,fs)
     %%
     filenames = dir(dirname);
     rownames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    assert((isequal(fill_div,'y') | isequal(fill_div, 'n')), 'User did not select valid option for fill_div (y for yes or n for no).')
-    assert(isequal(fill_genotype,'y') | isequal(fill_genotype, 'n'), 'User did not select valid option for fill_genotype (y for yes or n for no).')
-
-    if isequal(fill_genotype, 'n') 
-        assert(isequal(genotype,'') && isa(genotype, 'char'), 'User should leave genotype as empty string ('')')
-    elseif isequal (fill_genotype, 'y')
-        assert(isa (genotype, 'char') , 'User did not enter valid option for genotype.')
-    end
-
-
+   
     % This line opens the .csv with the names in order to create three columns
     % that are read by the network analysis pipeline.
     progressbar('Files','Wells') % Init 1 bars
@@ -97,7 +88,7 @@ function ConvertAxionRaw(dirname,metadatafilename,fill_div,fill_genotype,genotyp
                         end
                         % This is hard coded for MEA recording acquisition rate (fs) 
                         % of 12500 Hz. Change if data was acquired at a different rate.
-%                         fs = 12500; 
+                        %fs = 12500; 
                         % This is the step saves the .mat file for each MEA
                         % (well) with voltage vectors (dat), the names/location
                         % of the electrodes (channels) and  the acquisition rate (fs). 
@@ -117,8 +108,5 @@ function ConvertAxionRaw(dirname,metadatafilename,fill_div,fill_genotype,genotyp
        progressbar((i-2)/(length(filenames)-2),[])
     end
     
-    fillBatchFile (ExportFolder,metadatafilename,fill_div,fill_genotype,genotype,ExportFolder) 
-
-    % The next step is to run the .mat file outputs through the network
-    % analysis pipeline starting with the spike detection (Step 1).
+  
 end

@@ -1,6 +1,6 @@
 %% Convert hdf5 files to mat files
 
-function converterMCS(start_folder,out_folder,metadatafilename,fill_geno,fill_div,genotype,fs,varargin)
+function converterMCS(start_folder,out_folder,fs,varargin)
 
 cd(start_folder);
 
@@ -67,7 +67,7 @@ for k = 1:length(cycle)
     end
 end
 
-fillBatchFile (out_folder,metadatafilename,fill_div,fill_geno,genotype,out_folder) 
+
 %%
 warndlg('MCS Convertion Completed','Warning');
         
