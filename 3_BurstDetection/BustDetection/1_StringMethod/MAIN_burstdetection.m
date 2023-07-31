@@ -1,0 +1,57 @@
+% MAIN_burstdetection.m
+% This script operates the Burst Detection algorithm on the PeakDetection MAT files
+% by Michela Chiappalone (17 Marzo 200, 12 Gennaio 2007)
+
+
+check = 0;
+
+[start_folder]= selectfolder('Select the PeakDetectionMAT_files folder');
+if strcmp(num2str(start_folder),'0')
+    errordlg('Selection Failed - End of Session', 'Error');
+    return
+elseif strfind(start_folder,'Split')
+    check = 1;
+end
+
+
+% -----------> INPUT FROM THE USER
+[nspikes, ISImax, min_mbr, cwin, fs, cancelFlag]= uigetBURSTinfo; % Get parameters from user
+
+if cancelFlag
+     errordlg('Selection Failed - End of Session', 'Error');
+    return
+end
+[exp_num]=find_expnum(start_folder, '_PeakDetection'); % Experiment number
+
+% -----------> FOLDER MANAGEMENT
+cd (start_folder);
+expname = dir;
+expname = expname(3).name;
+expname_split = split(expname,'_');
+tojoin = expname_split(1:2);
+expname = strjoin(tojoin,'_');
+cd ..
+expfolder=pwd;
+[expFolderPath,PDFolderName] = fileparts(start_folder);
+% burstfoldername = strcat ('BurstDetectionMAT_', num2str(nspikes), ...
+%     '-', num2str(ISImax), 'msec'); % Burst files here
+[burst_folder, overwriteFlag] = createResultFolder(expFolderPath, 'BurstDetectionMAT');
+if(isempty(burst_folder))
+    errordlg('Error creating output folder!','!!Error!!')
+    return
+end
+
+% [burst_folder]=createresultfolder(expfolder, exp_num, burstfoldername); % Save path
+[end_folder1]=createresultfolder(burst_folder, expname, 'BurstDetectionFiles');
+[end_folder2]=createresultfolder(burst_folder, expname, 'BurstEventFiles');
+[end_folder3]=createresultfolder(burst_folder, expname, 'OutBSpikesFiles');
+clear burstfoldername expfolder
+
+cd (start_folder)
+
+% --------------> COMPUTATION PHASE: Burst Detection
+BurstDetectionAB(start_folder, end_folder1, end_folder2, end_folder3, nspikes, ISImax, min_mbr, cwin, fs,check);
+
+EndOfProcessing (start_folder, 'Successfully accomplished');
+
+clear all

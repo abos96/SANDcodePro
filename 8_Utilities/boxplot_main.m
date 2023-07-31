@@ -1,0 +1,9 @@
+
+figure
+boxplot(B,{'Cx Mean-Std' 'Cx Risk ' 'Cx CST'  ...
+           'He Mean-Std' 'He Risk ' 'He CST'...
+           'Hp Mean-Std' 'Hp Risk ' 'Hp CST'...
+            })
+ylabel('RATIO EXC/INH')
+hold on
+plot(1:9,ones(1,9),'--g')

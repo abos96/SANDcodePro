@@ -94,7 +94,8 @@ function ConvertAxionRaw(dirname,ExportFolder,fs)
                         % of the electrodes (channels) and  the acquisition rate (fs). 
                         % Setting MATLAB version "-v7.3" appears necessary for saving.
                         
-                        save(savenamefile, '-v7.3', "dat", "channels", "fs")
+                        save(savenamefile,  "dat", '-v7.3', "channels", "fs")
+                        clear dat channels
                         progressbar([],count./(size(AllData, 2).*size(AllData, 1)))
                     end
                     

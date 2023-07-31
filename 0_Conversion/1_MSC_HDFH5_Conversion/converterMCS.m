@@ -60,9 +60,8 @@ for k = 1:length(cycle)
         fs = 10000 ;
         savename = split(d(cycle(k)+2).name,'.');
         savename = savename{1};
-        save(savename, "dat", "channels", "fs")
-
-       
+        save(savename, "dat",'-v7.3', "channels", "fs")
+        clear dat channels
         delete (waitbarHandle);
     end
 end
