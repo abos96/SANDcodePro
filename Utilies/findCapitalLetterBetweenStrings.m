@@ -1,6 +1,6 @@
-function capitalLetter = findCapitalLetterBetweenStrings(inputString)
+function capitalLetter = findCapitalLetterBetweenStrings(inputString,tag)
     % Define the regular expression pattern
-    pattern = '_([A-Z])_mfr\.mat';
+    pattern = strcat('_([A-Z])',tag,'.mat');
 
     % Use the 'regexp' function to find matches
     match = regexp(inputString, pattern, 'tokens');

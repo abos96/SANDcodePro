@@ -65,7 +65,7 @@ for i = 1 : length(divNumbers) %cycle over DIV
     for j = 1 : length(divFiles) %cycle over Well
         name = cell2mat(divFiles(j));
         dataMatrix = load(name);
-        well = findCapitalLetterBetweenStrings(name);
+        well = findCapitalLetterBetweenStrings(name,'_mfr');
         wellIndex = find(strcmp(wellNames, well));
         % Each row is a well, each column is a DIV
         allmfr = table2array(dataMatrix.mfr_table(:,2));
@@ -98,6 +98,7 @@ sgtitle(strcat('Mean Firing Rate (thr: ',string(thr),'spike/s)'))
 figure
 thickness = 0.2; %1./length(divNumbers);
 % Resize the cell array to 1x2
+%% TO DO cope with the case in wich we only have 1 DIVs
 activeChannels2plot = {vertcat(activeChannels{:, 1}), vertcat(activeChannels{:, 2})};
 
 for i = 1 : length(divNumbers) %cycle over DIV

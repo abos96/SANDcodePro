@@ -56,6 +56,9 @@ for k = 1:length(cycle)
         %% Save data in the proper format
         cd(out_folder)
         dat = (dat.*10.^(exponent-(exponent+6)))';
+        for ii = 1 : length(label)
+            label{ii} = strrep(label{ii},'E-00156 ', '');
+        end
         channels = str2double(label)';
         fs = 10000 ;
         savename = split(d(cycle(k)+2).name,'.');

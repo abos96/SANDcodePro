@@ -8,7 +8,7 @@ function [divNumbers, wellNames] = identifyDIVandWell(folderPath)
     
     % Regular expression patterns to identify DIV and well
     divPattern = '(?<=DIV)\d+';
-    wellPattern = '(?<=DIV**_)\w';
+    %wellPattern = '(?<=DIV**_)\w';
     
     % Iterate over each file name
     for i = 1:numel(files)
@@ -23,7 +23,7 @@ function [divNumbers, wellNames] = identifyDIVandWell(folderPath)
         end
         
         % Extract well name
-        wellNames{i} = findCapitalLetterBetweenStrings(fileName);
+        wellNames{i} = findCapitalLetterBetweenStrings(fileName,'_mfr');
         %wellNames{i} = findLastLetterAfterUnderscore(fileName);
 
     end
