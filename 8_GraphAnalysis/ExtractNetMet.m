@@ -1,4 +1,4 @@
-function [NetMet] = ExtractNetMet(adjMs, lagval, spikeMatrix)
+function [NetMet] = ExtractNetMet(adjMs, lagval, spikeMatrix,netMetToCal,networkActivityFolder)
 %
 % Extract network metrics from adjacency matrices for organoid data
 % 
@@ -66,7 +66,7 @@ function [NetMet] = ExtractNetMet(adjMs, lagval, spikeMatrix)
 
 
 % specify list of network metrics to calculate
-netMetToCal = Params.netMetToCal;
+%netMetToCal = Params.netMetToCal;
 
 % edge threshold for adjM
 edge_thresh = 0.0001;
@@ -75,15 +75,10 @@ edge_thresh = 0.0001;
 meanSTTC = zeros(length(lagval), 1);
 maxSTTC = zeros(length(lagval), 1);
 
-% Folder to save figures 
-networkActivityFolder = Params.networkActivityFolder;
 
 for e = 1:length(lagval)
     
-    % load adjM
-    % eval(['adjM = adjMs.adjM' num2str(lagval(e)) 'mslag;']);
-    lagValStr = strcat('adjM', num2str(lagval(e)), 'mslag');
-    adjM = adjMs.(lagValStr);
+    adjM = adjMs;
     adjM(adjM<0) = 0;
     adjM(isnan(adjM)) = 0;
     

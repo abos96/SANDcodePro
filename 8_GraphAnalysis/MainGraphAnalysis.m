@@ -1,6 +1,13 @@
 % Mainscript to extract basic connectivity features from the adjMatrices
 % Namely, Node Degree, SWI, Number of Hub
 
+%% settings 
+netMetToCal = {'ND', 'EW', 'NS', 'aN', 'Dens', 'Ci', 'Q', 'nMod', 'Eglob', ...,
+        'CC', 'PL' 'SW','SWw' 'Eloc', 'BC', 'PC' , 'PC_raw', 'Cmcblty', 'Z', ...
+        'NE', 'effRank', 'num_nnmf_components', 'nComponentsRelNS', ...
+        'aveControl', 'modalControl'};
+
+
 %% MAGANE FOLDER find Peak detection folder
 [start_folder]= selectfolder('Select the \ADmatrices folder');
 if strcmp(num2str(start_folder),'0')
@@ -54,18 +61,20 @@ for i = 1: length(files)
     minNumberOfNodesToCalNetMet = 10;
     if length(adjM)> minNumberOfNodesToCalNetMet
 
-        ITER = 10000;
+        ITER = 1000;
         Z = pdist(adjM);
         D = squareform(Z);
         % TODO: rename L to Lattice to avoid confusion with path length
         [LatticeNetwork,Rrp,ind_rp,eff,met] = latmio_und_v2(adjM,ITER,D,'SW');
     
         % Random rewiring model (d)
-        ITER = 5000;
+        ITER = 1000;
         [R, ~,met2] = randmio_und_v2(adjM, ITER,'SW');             
         [SW, SWw, CC, PL] = small_worldness_RL_wu(adjM,R,LatticeNetwork);
     end
     %% Compute Number of Hubs
 
 end
-[NetMet] = ExtractNetMet(adjM, 25, spikeTrain);
+
+%%
+[NetMet] = ExtractNetMet(adjM, 25, spike_file.spikeTrain,netMetToCal,connFolder);
