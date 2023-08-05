@@ -92,11 +92,11 @@ for e = 1:length(lagval)
     %% connectivity measures
     
     % mean and max STTC
-    if Params.excludeEdgesBelowThreshold 
-        edge_weights = adjM(adjM > 0);
-    else
+%     if Params.excludeEdgesBelowThreshold 
+%         edge_weights = adjM(adjM > 0);
+%     else
         edge_weights = adjM(:);
-    end 
+%     end 
 
     meanSTTC(e) = nanmean(edge_weights);
 
@@ -123,7 +123,7 @@ for e = 1:length(lagval)
     nodeStrength = sum(adjM, 1);
     inclusionIndex = find(nodeStrength ~= 0);
     adjM = adjM(inclusionIndex, inclusionIndex);
-    coords = Params.coords(inclusionIndex, :);
+    %coords = Params.coords(inclusionIndex, :);
     Params.netSubsetChannels = Params.channels(inclusionIndex);
     
     %% node degree, edge weight, node strength

@@ -53,10 +53,8 @@ for i = 1: length(files)
     coords = getCoord('MSC60');
 
     %saving
-    channels = spike_file.channels;
     savename = replaceWord(files(i).name,'conn','NodeDegree');
-    save(savename,'ND','MEW','NS','channels','coords');
-    
+    save(savename,'ND','MEW','NS','channel')
     %% Compute SWI
     minNumberOfNodesToCalNetMet = 10;
     if length(adjM)> minNumberOfNodesToCalNetMet
@@ -73,10 +71,6 @@ for i = 1: length(files)
         [SW, SWw, CC, PL] = small_worldness_RL_wu(adjM,R,LatticeNetwork);
 
     end
-
-    %saving
-    savename = replaceWord(files(i).name,'conn','SmallWorldIndex');
-    save(savename,'SW','SWw','CC','PL');
 
     %% Local Efficency
     
@@ -96,10 +90,6 @@ for i = 1: length(files)
     % mean local efficiency across nodes
     ElocMean = mean(Eloc);
 
-    %saving
-    savename = replaceWord(files(i).name,'conn','LocalEfficency');
-    save(savename,'adjM_nrm','Eloc','ElocMean','channels','coords');
-
     %% Betweeness Centrality
     
     %   Note: Betweenness centrality may be normalised to the range [0,1] as
@@ -116,10 +106,6 @@ for i = 1: length(files)
     
     BC95thpercentile = prctile(BC, 95);
     BCmeantop5 = mean(BC(BC >= BC95thpercentile));
-
-    %saving
-    savename = replaceWord(files(i).name,'conn','BetweenessCentrality');
-    save(savename,'BC','BC95thpercentile','BCmeantop5','channels','coords');
 
     %% Partecipation Coefficient
 
@@ -152,11 +138,6 @@ for i = 1: length(files)
     PCmeanTop10 = mean(PCnorm(PCnorm >= PC90thpercentile));
     PCmeanBottom10 = mean(PCnorm(PCnorm <= PC10thpercentile));
 
-    %saving
-    savename = replaceWord(files(i).name,'conn','PartecipationCoefficient');
-    save(savename,'PC','PCnorm','PCmean','PC90thpercentile', 'PC10thpercentile', ...
-        'PCmeanTop10','PCmeanBottom10','channels','coords','Ci','Q');
-
     %% Compute Number of Hubs
     % active nodes
     aNtemp = sum(adjM,1);
@@ -168,8 +149,4 @@ for i = 1: length(files)
     sortND = sortND(1:round(aN/10));
     hubNDfind = ismember(ND, sortND);
     [hubND, ~] = find(hubNDfind==1);
-
-    %saving
-    savename = replaceWord(files(i).name,'conn','Hubs');
-    save(savename,'hubND','channels','coords');
 end
