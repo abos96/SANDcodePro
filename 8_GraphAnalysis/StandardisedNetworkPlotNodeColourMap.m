@@ -39,7 +39,7 @@ function [figureHandle, cb] = StandardisedNetworkPlotNodeColourMap(adjM, coords,
 
 %% plot
 p =  [50   100   720  550];
-F1 = figure;
+F1 = figure();
 F1.OuterPosition = p;
 aesthetics; axis off; hold on
 % title(strcat(regexprep(FN,'_','','emptymatch'),{' '},num2str(lagval(e)),{' '},'ms',{' '},'lag'))
@@ -452,30 +452,8 @@ if strcmp(plotType,'circular')
     cb.Label.String = z2name;
     
 end
-
-%% save figure
-figName = strcat([pNum,'_',plotType,'_NetworkPlot',zname,z2name]);
-figName = strrep(figName, ' ', '');
-figPath = fullfile(figFolder, figName);
-
-if exist('figureHandle', 'var')
-    pipelineSaveFig(figPath, Params.figExt, Params.fullSVG, figureHandle);
-elseif ~isfield(Params, 'oneFigure')
-    pipelineSaveFig(figPath, Params.figExt, Params.fullSVG, F1);
-else 
-    pipelineSaveFig(figPath, Params.figExt, Params.fullSVG, Params.oneFigure);
-end 
-
-
-
-%  output figure handle 
-if exist('figureHandle', 'var')
-    % do nothing
-elseif ~isfield(Params, 'oneFigure')
-    figureHandle = F1;
-else 
-    figureHandle = Params.oneFigure;
-end 
+axis equal
+figureHandle = F1;
 
 
 
