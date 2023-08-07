@@ -23,7 +23,14 @@ function [divNumbers, wellNames] = identifyDIVandWell(folderPath)
         end
         
         % Extract well name
-        wellNames{i} = findCapitalLetterBetweenStrings(fileName,'_mfr');
+         %wellNames{i} = findCapitalLetterBetweenStrings(fileName,'_mfr');
+       
+          wellNames{i} = findCapitalLetterBetweenStrings(fileName,'_mfr'); 
+          if isempty(wellNames{i})
+            wellNames{i} = findLetterAfterLastUnderscore(fileName); 
+          end
+       
+
         %wellNames{i} = findLastLetterAfterUnderscore(fileName);
 
     end

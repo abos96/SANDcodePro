@@ -1,4 +1,5 @@
-%%
+%% Main plot for individual graph plotting
+%This script plot single file graph contained in the RawfileMat folders
 
 
 %% MAGANE FOLDER find Peak detection folder
@@ -29,10 +30,11 @@ selectedItems = selectItemsFromListbox(items);
 connFolder = replaceWord(start_folder,'RawMatFiles','ConnectivityAnalysis');
 ADfolder = replaceWord(start_folder,'RawMatFiles','ADmatrices');
 saveDir = connFolder;
+% ---------------------------- PROCESSING----------------------------------
 for i = 1 : length(selectedItems)
     %% plot Node Degree
     file2load = replaceWord(selectedItems(i),'.mat','_NodeDegree.mat');
-    pathfile2load = fullfile(ConnFolder,cell2mat(file2load));
+    pathfile2load = fullfile(connFolder,cell2mat(file2load));
     var2plot = load(pathfile2load);
     Ad2load = replaceWord(selectedItems(i),'.mat','_conn.mat');
     pathAd2load = fullfile(ADfolder,cell2mat(Ad2load));
@@ -55,7 +57,7 @@ for i = 1 : length(selectedItems)
         saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
         disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
     end
-    
+    close(figureHandle)
     %% Save Adj Matrix and coordinates
     AdjM = Ad2plot.adjMci;
     coords = var2plot.coords;
@@ -77,10 +79,10 @@ for i = 1 : length(selectedItems)
         saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
         disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
     end
-
+    close(figureHandle)
     %% Local efficiency
     file2load = replaceWord(selectedItems(i),'.mat','_LocalEfficency.mat');
-    pathfile2load = fullfile(ConnFolder,cell2mat(file2load));
+    pathfile2load = fullfile(connFolder,cell2mat(file2load));
     var2plot = load(pathfile2load);
 
     [figureHandle, cb] = StandardisedNetworkPlotNodeColourMap(AdjM,coords,...
@@ -100,6 +102,54 @@ for i = 1 : length(selectedItems)
         saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
         disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
     end
+    close(figureHandle)
     %% Partecipation Coefficient
+    file2load = replaceWord(selectedItems(i),'.mat','_PartecipationCoefficient.mat');
+    pathfile2load = fullfile(connFolder,cell2mat(file2load));
+    var2plot = load(pathfile2load);
+
+    [figureHandle, cb] = StandardisedNetworkPlotNodeColourMap(AdjM,coords,...
+        0.01, var2plot.PC, 'PartecipationCoefficient', var2plot.PC, 'PartecipationCoefficient', 'MEA', connFolder,0.01);
+    tit = strcat(cell2mat(selectedItems(i)),' Partecipation Coefficient');
+    tit = strrep(tit, '_', ' ');
+    title(tit)
+
+    % save picture
+    % Save the figure as PNG
+    pngFileName = replaceWord(file2load,'.mat','.png');
+    saveas(figureHandle, fullfile(saveDir, cell2mat(pngFileName)), 'png');
+    disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
+    if strcmp(savesvg,'yes')
+        % Save the figure as SVG
+        svgFileName = replaceWord(file2load,'.mat','.svg');
+        saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
+        disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
+    end
+    close(figureHandle)
     %% Betwines Centrality
+    file2load = replaceWord(selectedItems(i),'.mat','_BetweenessCentrality.mat');
+    pathfile2load = fullfile(connFolder,cell2mat(file2load));
+    var2plot = load(pathfile2load);
+
+    [figureHandle, cb] = StandardisedNetworkPlotNodeColourMap(AdjM,coords,...
+        0.01, var2plot.BC, 'BetweenessCentrality', var2plot.BC, 'BetweenessCentrality', 'MEA', connFolder,0.01);
+    tit = strcat(cell2mat(selectedItems(i)),' Betweeness Centrality');
+    tit = strrep(tit, '_', ' ');
+    title(tit)
+
+    % save picture
+    % Save the figure as PNG
+    pngFileName = replaceWord(file2load,'.mat','.png');
+    saveas(figureHandle, fullfile(saveDir, cell2mat(pngFileName)), 'png');
+    disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
+    if strcmp(savesvg,'yes')
+        % Save the figure as SVG
+        svgFileName = replaceWord(file2load,'.mat','.svg');
+        saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
+        disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
+    end
+    close(figureHandle)
 end
+
+% ------------------- END OF PROCESSING
+    EndOfProcessing (start_folder, 'Successfully accomplished');

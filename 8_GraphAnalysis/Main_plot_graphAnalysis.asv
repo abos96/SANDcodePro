@@ -78,13 +78,11 @@ for i = 1 : length(divNumbers) % Cycle over DIV
         SWI{wellIndex, i} = load(replaceWord(name, '.mat', '_SmallWorldIndex.mat'));
     end
 end
-% save experimental name
-expName = split(name,'_');
-expName = join(expName(1:2),'_');
+
 %% Plot Node Degree over DIV
 
 % Create a figure to plot the Node Degree over DIV
-F1 = figure();
+F1 = Figure();
 for i = 1 : length(divNumbers) % Cycle over DIV
     for j = 1 : length(wellNames) % Cycle over Well
 
@@ -111,13 +109,14 @@ sgtitle('Node Degree')
 
 % save picture
 % Save the figure as PNG
-pngFileName = strcat(expName,'_NodeDegre.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
+expName = split(name,'_');
+pngFileName = replaceWord(file2load,'.mat','.png');
+saveas(figureHandle, fullfile(saveDir, cell2mat(pngFileName)), 'png');
 disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
 if strcmp(savesvg,'yes')
     % Save the figure as SVG
-    pngFileName = strcat(expName,'_NodeDegre.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
+    svgFileName = replaceWord(file2load,'.mat','.svg');
+    saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
     disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
 end
 close(F1)
@@ -128,7 +127,7 @@ close(F1)
 
 %% Plot Node strengh over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -149,21 +148,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Node Strength')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_NodeStrengh.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_NodeStrengh.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
 %% Plot Partecipation Coefficient over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -184,21 +171,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Partecipation Coefficient')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_PartecipationCoefficient.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_PartecipationCoefficient.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
 %% Plot Normalized Partecipation Coefficient over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -219,21 +194,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Normalized Partecipation Coefficient')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_NormalizedPartecipationCoefficient.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_NormalizedPartecipationCoefficient.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
 %% Plot Betweeness Centrality over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -254,21 +217,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Betweeness Centrality')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_BetweenessCentrality.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_Betweeness Centrality.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
 %% Plot Local Efficieniency over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -289,21 +240,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Local Efficieniency')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_LocalEfficieniency.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_LocalEfficieniency.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
 %% Plot Number of Hubs over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -325,21 +264,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Number of Hubs')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_NumberOfHubs.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_NumberOfHubs.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
 %% Plot SWI over DIV
 
-F1 = figure();
+figure
 for i = 1 : length(divNumbers) %cycle over DIV
 
     for j = 1 : length(wellNames) %cycle over Well
@@ -361,19 +288,3 @@ for i = 1 : length(divNumbers) %cycle over DIV
 
 end
 sgtitle('Small World Index')
-% save picture
-% Save the figure as PNG
-pngFileName = strcat(expName,'_SmallWorldIndex.png');
-saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'png');
-disp(['Figure saved as ' fullfile(saveDir, pngFileName)]);
-if strcmp(savesvg,'yes')
-    % Save the figure as SVG
-    pngFileName = strcat(expName,'_SmallWorldIndex.svg');
-    saveas(F1, fullfile(saveDir, cell2mat(pngFileName)), 'svg');
-    disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
-end
-close(F1)
-
-
-%% ------------------- END OF PROCESSING
-    EndOfProcessing (start_folder, 'Successfully accomplished');

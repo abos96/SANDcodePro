@@ -15,11 +15,21 @@ if isempty (start_folder)
 elseif ~strcmp(split(start_folder,'\'),'RawMatFiles') %check  if the name is correct
     error('The folder is not correct')
 end
+
+%% Get a list of all files in the folder
+files = dir(fullfile(start_folder, '*.mat'));
+items = cell(length(files),1);
+for i = 1:numel(files)
+    items{i} = files(i).name;
+end
+
+selectedItems = selectItemsFromListbox(items);
+selectedItems = cell2struct(selectedItems','name',1);
 %% Manage Spike Detection folder
 % Move to the start folder containing raw .mat
 cd(start_folder)
 tmp = dir;
-name_wells = tmp(3:end);         % name of the wells
+name_wells = selectedItems;         % name of the wells
 num_wells = length(name_wells);  % number of files contained in the start folder
 
 % create the spike detected file folder
@@ -33,6 +43,9 @@ else
     cd('SpikeDetection')
     SpikeDetection_folder = pwd;
 end
+
+
+
 %% Parameter for Spike Detection
 % To improve... create UI for parameters
 prompt = {'Multiplier (int)','Fs  (Hz)','Refractary Period (ms)','Filter'};

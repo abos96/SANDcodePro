@@ -17,7 +17,8 @@ duration_s = length(spikeMatrix)/fs; % in seconds
 spikeMatrix = full(spikeMatrix);
 
 % downsample matrix to 1 frame per second
-downSpikeMatrix = downSampleSum(spikeMatrix, duration_s);
+dur = round(duration_s);
+downSpikeMatrix = downSampleSum(spikeMatrix(1:(dur.*fs),:), dur);
 
 %% plot the raster
 
@@ -51,7 +52,7 @@ ylimit_cbar = max([ylimit_cbar, 1]);  % ensures it is minimum of 1
 
 caxis([0,ylimit_cbar])
 yticks([1, 10:10:60])
-title({strcat(replaceWord(File,'_spike.mat',' '),' raster scaled to recording')});
+title({strcat(replaceWord(strrep(File, '_', ' '),'spike.mat',' '),' raster scaled to recording')});
 ax = gca;
 ax.TitleFontSizeMultiplier = 1;
 

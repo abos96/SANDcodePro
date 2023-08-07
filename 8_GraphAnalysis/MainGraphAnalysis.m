@@ -173,3 +173,6 @@ for i = 1: length(files)
     savename = replaceWord(files(i).name,'conn','Hubs');
     save(savename,'hubND','channels','coords');
 end
+
+% ------------------- END OF PROCESSING
+    EndOfProcessing (start_folder, 'Successfully accomplished');
