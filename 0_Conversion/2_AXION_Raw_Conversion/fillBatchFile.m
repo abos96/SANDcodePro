@@ -1,11 +1,10 @@
-function fillBatchFile (dirname,metadatafile,fill_div,fill_genotype,genotype,ExportFolder)
+function csv2save = fillBatchFile (dirname,fill_div,fill_genotype,genotype)
 % fillBatchFile create a .csv file in the folder ExportFolder based on file in the dirname folder   
 % edited by AB may23; 
 
 
-    cd(ExportFolder)
-    mat_files=dir('*.mat'); %pick out only .mat files produced by rawConvert.m
-    batch_file=fullfile(dirname,metadatafile); 
+    
+    mat_files=dir(fullfile(dirname,'*.mat')); %pick out only .mat files produced by rawConvert.m
     batchHdrs={'Filename','DIV','Genotype','Ground'}; 
     row_number=1;
     div_str='';
@@ -18,7 +17,22 @@ function fillBatchFile (dirname,metadatafile,fill_div,fill_genotype,genotype,Exp
         batch_table.Filename{row_number}=mat_fname;
 
         if strcmp(fill_genotype,'y') 
-            batch_table.Genotype(:,1)={genotype};
+            rowIndex = 0;
+            well = findLetterAfterLastUnderscore(mat_fname);
+            % Loop through the cell array to find the element
+            for j = 1:size(genotype, 1)
+                
+                    if strcmp(genotype{j, 1}, well)
+                        rowIndex = j;
+                        
+                        break;  % Break the loop once the element is found
+                    end
+               
+                if rowIndex > 0
+                    break;  % Break the outer loop once the element is found
+                end
+            end
+            batch_table.Genotype(i,1)=genotype(rowIndex,2);
         end
 
         if strcmp(fill_div,'y')
@@ -34,6 +48,6 @@ function fillBatchFile (dirname,metadatafile,fill_div,fill_genotype,genotype,Exp
         end
     end
 %     cell_batch = cell(1,size(batch_table,2));
-      cell_batch = [{'Recording filename','DIV group','Genotype',''};(batch_table{:,:})]
-      writecell((cell_batch),strcat(batch_file,'.csv'))
+      csv2save = batch_table;
+      
 end
