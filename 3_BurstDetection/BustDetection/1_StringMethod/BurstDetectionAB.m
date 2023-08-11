@@ -26,8 +26,9 @@ n = 60;
 cd(peakfolder) 
 
     
-
+ progressbar('Burst Detection')
  for i = first:NumPeakFiles % FOR cycle on the single directory files
+        progressbar(i/NumPeakFiles)
         burst_detection_cell = cell(n,1);  % cell array containing the burst features for each channel
         burst_event_cell     = cell (n,1); % cell array containing the burst_event train for each channel
         outburst_spikes_cell = cell(n,1);  % cell array containing the random spikes features for each channel
@@ -117,10 +118,18 @@ cd(peakfolder)
                     burst_detection=[burst_detection, ibi, bp; lastrow];
                     % burst_detection=[init, end, nspikes, duration, ibi, bp;
                     %  acquisition time, total spikes, total bursts, total burst spikes, mbr, average mfob]
-                    el = channels(kk);                    
+                    
+                    %deal with nan in electrode 15
+                    if isnan(channels(kk))
+                        el = 15;
+                    else
+                        el = channels(kk); 
+                    end
+                    
                     burst_detection_cell{el,1}= burst_detection; % Update the cell array
                     burst_event_cell{el,1}= burst_event;         % Update the cell array
                     outburst_spikes_cell{el,1}= outburst_cell;   % Update the cell array
+                    
                     
                     clear rlines clines out_burst tempburst
                 end

@@ -1,4 +1,4 @@
-function HalfViolinPlot(data, pos, colour, width, kdeWidthForOnePoint)
+function HalfViolinPlot(data, pos, colour, width, kdeWidthForOnePoint,varargin)
 % Parameters
 % -----------
 % data : 
@@ -9,6 +9,12 @@ function HalfViolinPlot(data, pos, colour, width, kdeWidthForOnePoint)
 % kdeWidthForOnePoint : 
 
 % created May 2020, author RCFeord
+ % Check the number of input arguments
+numArgs = nargin;
+if numArgs==6
+    maxy = varargin{1};
+end
+        
 
 data(isnan(data)) = [];
 data(isinf(data)) = [];
@@ -71,5 +77,5 @@ obj.MeanPlot = scatter(pos, meanValue, 100, [0 0 0], 'filled');
 semValue = std(data)/sqrt(length(data));
 obj.StdPlot = plot([pos pos],[meanValue-semValue meanValue+semValue],'Color',[0 0 0]);
 obj.StdPlot.LineWidth = 3;
-
+%ylim([0 maxy])
 end

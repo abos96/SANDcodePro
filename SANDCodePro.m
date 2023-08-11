@@ -22,7 +22,7 @@ function varargout = SANDCodePro(varargin)
 
 % Edit the above text to modify the response to help SANDCodePro
 
-% Last Modified by GUIDE v2.5 10-Aug-2023 17:16:03
+% Last Modified by GUIDE v2.5 10-Aug-2023 21:25:39
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -68,15 +68,7 @@ function varargout = SANDCodePro_OutputFcn(hObject, eventdata, handles)
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
-varargout{1} = handles.output;
-
-
-% --- Executes during object creation, after setting all properties.
-function axes1_CreateFcn(hObject, eventdata, handles)
-
-    imageFilePath = 'logo.jpeg';
+imageFilePath = fullfile('C:\Users\aboschi\OneDrive - Fondazione Istituto Italiano Tecnologia\Documents\SANDcodePro\SANDcodePro','logo.jpeg');
     image = imread(imageFilePath);
     
 
@@ -86,6 +78,14 @@ function axes1_CreateFcn(hObject, eventdata, handles)
     % Plot the image in the axes
      % Use the name of your axes component
     imshow(image);
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+% --- Executes during object creation, after setting all properties.
+
+function axes1_CreateFcn(hObject, eventdata, handles)
+    
     
 % hObject    handle to axes1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -232,3 +232,11 @@ function createSpreadSheet_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 GenerateCSV
+
+
+% --------------------------------------------------------------------
+function clean_data_Callback(hObject, eventdata, handles)
+% hObject    handle to clean_data (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+Main_cleandata

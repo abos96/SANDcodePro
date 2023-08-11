@@ -57,7 +57,7 @@ activeChannels = cell(length(wellNames),length(divNumbers));
 [activeChannels{:}] = deal([0]);
 
 cd(spikeAnalysis_folder)
-
+maxthr =0;
 for i = 1 : length(divNumbers) %cycle over DIV 
     searchString = strcat('DIV',divNumbers{i});
     divFiles = findMATFilesWithSpecificString(start_folder, searchString);
@@ -71,6 +71,13 @@ for i = 1 : length(divNumbers) %cycle over DIV
         allmfr = table2array(dataMatrix.mfr_table(:,2));
         % Impose a threshold for active electrode to plot
         thrmfr = allmfr(allmfr>thr);
+        threshold = 2;
+        outlierIndices = isoutlier(thrmfr, 'ThresholdFactor', threshold);
+        thrmfr = thrmfr(~outlierIndices);
+        new_max = max(thrmfr);
+        if new_max > maxthr
+            maxthr = new_max;
+        end
         mfr{wellIndex,i} = thrmfr; 
         activeChannels{wellIndex,i} = length(thrmfr);
      end
@@ -82,7 +89,7 @@ thickness = 1./length(wellNames);
 for i = 1 : length(divNumbers) %cycle over DIV
     for j = 1 : length(wellNames) %cycle over Well
         subplot(1,length(divNumbers),i)
-        HalfViolinPlot(mfr{j,i}, j, colorsRGB(j,:), thickness, 0)
+        HalfViolinPlot(mfr{j,i}, j, colorsRGB(j,:), thickness, 0,maxthr)
     end
         xticks(1 : length(wellNames))
         xticklabels(wellNames)
@@ -91,7 +98,7 @@ for i = 1 : length(divNumbers) %cycle over DIV
         title(strcat('DIV',divNumbers{i}))
         aesthetics
         set(gca,'TickDir','out');
-        ylim([0 inf])
+        ylim([0 maxthr])
 end
 sgtitle(strcat('Mean Firing Rate (thr: ',string(thr),'spike/s)'))
 %% plot channels table
@@ -104,7 +111,7 @@ activeChannels2plot = {vertcat(activeChannels{:, 1}), vertcat(activeChannels{:, 
 for i = 1 : length(divNumbers) %cycle over DIV
         subplot(1,length(divNumbers),i)
 
-        HalfViolinPlot(activeChannels2plot{i}, i, colorsRGB(i,:), thickness, 0)
+        HalfViolinPlot(vertcat(activeChannels{:,i}), i, colorsRGB(i,:), thickness, 0)
 
         xticks(1 : length(wellNames))
         xticklabels(divNumbers)
