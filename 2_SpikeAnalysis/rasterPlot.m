@@ -17,7 +17,7 @@ duration_s = length(spikeMatrix)/fs; % in seconds
 spikeMatrix = full(spikeMatrix);
 
 % downsample matrix to 1 frame per second
-dur = round(duration_s);
+dur = floor(duration_s);
 downSpikeMatrix = downSampleSum(spikeMatrix(1:(dur.*fs),:), dur);
 
 %% plot the raster

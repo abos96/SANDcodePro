@@ -94,7 +94,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
         xticks(1 : length(wellNames))
         xticklabels(wellNames)
         xlabel('Wells')
-        ylabel('MFR (Spike/sec)')
+        if i == 1
+            ylabel('MFR (Spike/sec)')
+        end
         title(strcat('DIV',divNumbers{i}))
         aesthetics
         set(gca,'TickDir','out');
@@ -116,7 +118,9 @@ for i = 1 : length(divNumbers) %cycle over DIV
         xticks(1 : length(wellNames))
         xticklabels(divNumbers)
         xlabel('DIV')
-        ylabel('Active Channels')
+        if i == 1
+            ylabel('Active Channels')
+        end
         title(strcat('DIV',divNumbers{i}))
         aesthetics
         set(gca,'TickDir','out');

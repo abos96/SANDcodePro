@@ -61,12 +61,11 @@ valid_wname = "threshold";
 
 %% Filtering TO DO...
 if strcmp(filterFlag,'yes')
-%     lowpass = 600;
-%     highpass = 8000;
-%     wn = [lowpass highpass] / (fs / 2);
-%     filterOrder = 3;
-%     [b, a] = butter(filterOrder, wn);
-%     trace = filtfilt(b, a, double(trace));
+    lowpass = 20;
+    highpass = 3000;
+    wn = [lowpass highpass] / (fs / 2);
+    filterOrder = 3;
+    [b, a] = butter(filterOrder, wn);
 end
 %% Run Spike Detection
 
@@ -84,7 +83,7 @@ for count = 1 : num_wells
     channels = well.channels;
     fprintf('\n Detecting Spike in %s ...', cell2mat(filename));
 
-
+    trace = filtfilt(b, a, well.dat);
     tic
     [spikeTrain, threshold] = detectSpikesThreshold(...
                                          well.dat,...

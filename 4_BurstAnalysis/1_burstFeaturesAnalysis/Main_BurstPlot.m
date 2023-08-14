@@ -54,7 +54,7 @@ csvFileNames = {files.name};
 n = length(wellNames);
 % Create a matrix to store the RGB values
 colormapValues = linspace(0, 1, n)';
-colorsRGB = parula(n);
+colorsRGB = turbo(n);
 
 %% load all the data
 mbr = cell(length(wellNames),length(divNumbers));
@@ -63,8 +63,9 @@ BD = cell(length(wellNames),length(divNumbers));
 [mbr{:}] = deal([0]);
 [RNDSPKxBurst{:}] = deal([0]);
 [BD{:}] = deal([0]);
-
-
+maxthr_mbr = 0;
+maxthr_rnd = 0;
+maxthr_bd = 0;
 
 cd(start_folder)
 for i = 1 : length(divNumbers) %cycle over DIV 
@@ -76,10 +77,31 @@ for i = 1 : length(divNumbers) %cycle over DIV
         dataMatrix = readtable(name);
         well = findLetterAfterLastUnderscore(name);
         wellIndex = find(strcmp(wellNames, well));
+        % find maxes
+        mbrtemp = table2array(dataMatrix(:,4));
+        new_max_mbr = max(mbrtemp);
+        if new_max_mbr > maxthr_mbr
+            maxthr_mbr = new_max_mbr;
+        end
+
+        % find maxes
+        rndtemp = table2array(dataMatrix(:,2));
+        new_max_rndtemp  = max(rndtemp);
+        if new_max_rndtemp > maxthr_rnd
+            maxthr_rnd = new_max_rndtemp;
+        end
+
+         % find maxes
+        bdtemp = table2array(dataMatrix(:,8));
+        new_max_bd= max(bdtemp);
+        if new_max_bd > maxthr_bd
+            maxthr_bd = new_max_bd;
+        end
+
         % Each row is a well, each column is a DIV
-        mbr{wellIndex,i} = table2array(dataMatrix(:,4));  
-        RNDSPKxBurst{wellIndex,i} = table2array(dataMatrix(:,2));
-        BD{wellIndex,i} = table2array(dataMatrix(:,8));
+        mbr{wellIndex,i} = mbrtemp;  
+        RNDSPKxBurst{wellIndex,i} =  rndtemp;
+        BD{wellIndex,i} = bdtemp;
      end
 end
 
@@ -93,11 +115,13 @@ for i = 1 : length(divNumbers) %cycle over DIV
         xticks(1 : length(wellNames))
         xticklabels(wellNames)
         xlabel('Wells')
-        ylabel('MBR (burst/min)')
+        if i == 1
+           ylabel('MBR (burst/min)')
+        end
         title(divNumbers{i})
         aesthetics
         set(gca,'TickDir','out');
-        ylim([0 inf])
+        ylim([0 maxthr_mbr])
 end
 sgtitle('MBR')
 
@@ -111,14 +135,16 @@ for i = 1 : length(divNumbers) %cycle over DIV
         xticks(1 : length(wellNames))
         xticklabels(wellNames)
         xlabel('Wells')
-        ylabel('RND SPK xBurst (%)')
+         if i == 1
+           ylabel('RND SPK xBurst (%)')
+         end
         title(divNumbers{i})
         aesthetics
         set(gca,'TickDir','out');
-        ylim([0 inf])
+        ylim([0 100])
 end
 sgtitle('% Random Spikes')
-%% MBR
+%% BD
 figure
 for i = 1 : length(divNumbers) %cycle over DIV
     for j = 1 : length(wellNames) %cycle over Well
@@ -128,11 +154,13 @@ for i = 1 : length(divNumbers) %cycle over DIV
         xticks(1 : length(wellNames))
         xticklabels(wellNames)
         xlabel('Wells')
+         if i == 1
         ylabel('Burst Duration (ms)')
+         end
         title(divNumbers{i})
         aesthetics
         set(gca,'TickDir','out');
-        ylim([0 inf])
+        ylim([0 2000])
 end
 sgtitle('Burst Duration')
 

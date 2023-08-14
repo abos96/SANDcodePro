@@ -84,9 +84,11 @@ for i = 1 : length(selectedItems)
     file2load = replaceWord(selectedItems(i),'.mat','_LocalEfficency.mat');
     pathfile2load = fullfile(connFolder,cell2mat(file2load));
     var2plot = load(pathfile2load);
-
+    
+    if find(var2plot.Eloc)
     [figureHandle, cb] = StandardisedNetworkPlotNodeColourMap(AdjM,coords,...
         0.01, var2plot.Eloc, 'LocalEfficiency', var2plot.Eloc, 'LocalEfficiency', 'MEA', connFolder,0.01);
+    
     tit = strcat(cell2mat(selectedItems(i)),' Local Efficency');
     tit = strrep(tit, '_', ' ');
     title(tit)
@@ -102,7 +104,9 @@ for i = 1 : length(selectedItems)
         saveas(figureHandle, fullfile(saveDir, cell2mat(svgFileName)), 'svg');
         disp(['Figure saved as ' fullfile(saveDir, svgFileName)]);
     end
+    
     close(figureHandle)
+    end
     %% Partecipation Coefficient
     file2load = replaceWord(selectedItems(i),'.mat','_PartecipationCoefficient.mat');
     pathfile2load = fullfile(connFolder,cell2mat(file2load));
